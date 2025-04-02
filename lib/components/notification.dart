@@ -1,3 +1,4 @@
+import 'package:firebase/services/fcm_service.dart';
 import 'package:firebase/services/get_server_key.dart';
 import 'package:firebase/services/notification_service.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class _NotificationPageState extends State<NotificationPage> {
     super.initState();
     notificationService.requestNotificationPermission();
     notificationService.getDeviceToken();
+    FcmService.firebaseInit();
   }
 
   @override
