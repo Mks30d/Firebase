@@ -17,6 +17,7 @@ class _NotificationPageState extends State<NotificationPage> {
     // TODO: implement initState
     super.initState();
     notificationService.requestNotificationPermission();
+    notificationService.getDeviceToken();
   }
 
   @override

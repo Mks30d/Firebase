@@ -32,9 +32,28 @@ class NotificationService {
       Future.delayed(
         Duration(seconds: 2),
         () {
+          // redirection to app notification setting
           AppSettings.openAppSettings(type: AppSettingsType.notification);
         },
       );
     }
   }
+
+  // get the current device token, as every device token is different
+  Future<String> getDeviceToken() async{
+    NotificationSettings settings  = await messaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: true,
+      sound: true,
+    );
+
+    String? token = await messaging.getToken();
+    print("Device Token:- $token");
+    return token!;
+  }
+
 }
