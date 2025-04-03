@@ -75,7 +75,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   title: "Notification title",
                   body: "Notification body",
                   data: {
-                    "screen": "login",
+                    "screen": "NotificationList",
                   },
                 );
               },

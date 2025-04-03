@@ -193,7 +193,7 @@ class NotificationService {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NotificationList(),
+          builder: (context) => NotificationList(message: message,),
         ),
       );
     }
