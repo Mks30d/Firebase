@@ -13,9 +13,19 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Login Page"),
+        backgroundColor: Colors.teal,
       ),
-      body: Column(
-        children: [ElevatedButton(onPressed: () {}, child: Text("Btn"))],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: Text("Btn"),
+            ),
+          ],
+        ),
       ),
     );
   }

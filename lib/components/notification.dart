@@ -1,3 +1,4 @@
+import 'package:firebase/components/login_page.dart';
 import 'package:firebase/services/fcm_service.dart';
 import 'package:firebase/services/get_server_key.dart';
 import 'package:firebase/services/notification_service.dart';
@@ -20,6 +21,8 @@ class _NotificationPageState extends State<NotificationPage> {
     notificationService.requestNotificationPermission();
     notificationService.getDeviceToken();
     FcmService.firebaseInit();
+    notificationService.firebseInit(context);
+    notificationService.setupInteractMessage(context);
   }
 
   @override
@@ -27,18 +30,33 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Notification Page"),
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.blue,
       ),
-      body: Column(
-        children: [
-          ElevatedButton(
-              onPressed: () async {
-                GetServerKey getServerKey = GetServerKey();
-                String accessToken = await getServerKey.getServerKeyToken();
-                print("accessToken: $accessToken");
-              },
-              child: Text("Button"))
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: () async {
+                  GetServerKey getServerKey = GetServerKey();
+                  String accessToken = await getServerKey.getServerKeyToken();
+                  print("accessToken: $accessToken");
+                },
+                child: Text("Button"),
+            ),
+
+            ElevatedButton(onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginPage(),
+                ),
+              );
+            }, child: Text("Login"),
+            )
+          ],
+        ),
       ),
     );
   }
