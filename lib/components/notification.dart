@@ -14,15 +14,26 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
 
   NotificationService notificationService = NotificationService();
+  final GetServerKey _getServerKey = GetServerKey();
+
   @override
   void initState() {
     // TODO: implement initState
+    print("initState:--------");
     super.initState();
     notificationService.requestNotificationPermission();
     notificationService.getDeviceToken();
+    getServerToken();
+    // _getServerKey.getServerKeyToken();
     FcmService.firebaseInit();
     notificationService.firebseInit(context);
     notificationService.setupInteractMessage(context);
+  }
+
+  // https://firebase.google.com/docs/cloud-messaging/migrate-v1?hl=en&authuser=0
+  Future<void> getServerToken() async {
+    String serverToken = await _getServerKey.getServerKeyToken();
+    print("Server Token:------- $serverToken");
   }
 
   @override
