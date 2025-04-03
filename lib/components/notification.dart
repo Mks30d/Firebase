@@ -13,7 +13,6 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-
   NotificationService notificationService = NotificationService();
   final GetServerKey _getServerKey = GetServerKey();
 
@@ -50,33 +49,35 @@ class _NotificationPageState extends State<NotificationPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ElevatedButton(
-                onPressed: () async {
-                  GetServerKey getServerKey = GetServerKey();
-                  String accessToken = await getServerKey.getServerKeyToken();
-                  print("accessToken: $accessToken");
-                },
-                child: Text("Button"),
-            ),
-
-            ElevatedButton(onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginPage(),
-                ),
-              );
-            }, child: Text("Login"),
+              onPressed: () async {
+                GetServerKey getServerKey = GetServerKey();
+                String accessToken = await getServerKey.getServerKeyToken();
+                print("accessToken: $accessToken");
+              },
+              child: Text("Button"),
             ),
             ElevatedButton(
-              onPressed: () async{
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+              child: Text("Login"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
                 await SendNotificationUsingApiService.sendNotificationUsingApi(
                   token:
                       "eqnoyYJJTEueouqMrCcmmB:APA91bE79P0IscvF9CEv9ZThYtqncygUOkuMTJfUi14SrBJuukyZhpnpZMQ85BUaA0AVlXeOAkLAmhg-SgqPhVsibMPYCnUlP5r8h12WaOBhEYV-UxGv9TI",
                   title: "Notification title",
                   body: "Notification body",
-                  data: {"screen": "cart",},
+                  data: {
+                    "screen": "login",
+                  },
                 );
-
               },
               child: Text("Hit API"),
             ),

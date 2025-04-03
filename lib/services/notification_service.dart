@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase/components/login_page.dart';
-import 'package:firebase/components/notification.dart';
+import 'package:firebase/components/notification_list.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 // import 'package:get/get.dart';
 import 'dart:io' show Platform;
 
@@ -47,8 +48,8 @@ class NotificationService {
   }
 
   // get device token, as every device token is different
-  Future<String> getDeviceToken() async{
-    NotificationSettings settings  = await messaging.requestPermission(
+  Future<String> getDeviceToken() async {
+    NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
@@ -67,8 +68,7 @@ class NotificationService {
   void initLocalNotification(
       BuildContext context, RemoteMessage message) async {
 
-    var androidInitSetting =
-        const AndroidInitializationSettings("@mipmap/ic_launcher");
+    var androidInitSetting = const AndroidInitializationSettings("@mipmap/ic_launcher");
     var iosInitSetting = const DarwinInitializationSettings();
 
     var initializationSettings = InitializationSettings(
@@ -91,19 +91,18 @@ class NotificationService {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification!.android;
 
-        if(kDebugMode) {
+        if (kDebugMode) {
           print("Notification title:-- ${notification!.title}");
           print("Notification body:-- ${notification.body}");
         }
-        if(Platform.isIOS) {
+        if (Platform.isIOS) {
           iosForegroundMessage();
         }
-        if(Platform.isAndroid) {
+        if (Platform.isAndroid) {
           initLocalNotification(context, message);
           // handleMessage(context, message);
           showNotificationPopup(message);
         }
-
       },
     );
   }
@@ -119,7 +118,8 @@ class NotificationService {
     );
 
     // android setting
-    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+    AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
       channel.id.toString(),
       channel.name.toString(),
       channelDescription: "Channel Description",
@@ -152,9 +152,9 @@ class NotificationService {
       },
     );
   }
-  
+
   // for aap is in background or terminated state
-  Future<void> setupInteractMessage(BuildContext context) async{
+  Future<void> setupInteractMessage(BuildContext context) async {
     // background state
     FirebaseMessaging.onMessageOpenedApp.listen(
       (message) {
@@ -163,33 +163,48 @@ class NotificationService {
     );
     // terminated state
     FirebaseMessaging.instance.getInitialMessage().then(
-          (RemoteMessage? message) {
-            if(message != null && message.data.isNotEmpty) {
-              handleMessage(context, message);
-            }
-          },
+      (RemoteMessage? message) {
+        if (message != null && message.data.isNotEmpty) {
+          handleMessage(context, message);
+        }
+      },
     );
   }
 
   // handle message: what to do when user click notification
   Future<void> handleMessage(
       BuildContext context, RemoteMessage message) async {
-    print("Clicked:-----");
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginPage(),
-      ),
-    );
+    print("Notification Clicked:---");
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => LoginPage(),
+    //   ),
+    // );
+
+    if (message.data["screen"] == "login") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NotificationList(),
+        ),
+      );
+    }
   }
 
   // ios message
-  Future iosForegroundMessage() async{
+  Future iosForegroundMessage() async {
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
     );
   }
-
 }
