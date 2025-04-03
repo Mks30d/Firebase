@@ -2,6 +2,7 @@ import 'package:firebase/components/login_page.dart';
 import 'package:firebase/services/fcm_service.dart';
 import 'package:firebase/services/get_server_key.dart';
 import 'package:firebase/services/notification_service.dart';
+import 'package:firebase/services/send_notification_using_api_service.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -65,7 +66,20 @@ class _NotificationPageState extends State<NotificationPage> {
                 ),
               );
             }, child: Text("Login"),
-            )
+            ),
+            ElevatedButton(
+              onPressed: () async{
+                await SendNotificationUsingApiService.sendNotificationUsingApi(
+                  token:
+                      "eqnoyYJJTEueouqMrCcmmB:APA91bE79P0IscvF9CEv9ZThYtqncygUOkuMTJfUi14SrBJuukyZhpnpZMQ85BUaA0AVlXeOAkLAmhg-SgqPhVsibMPYCnUlP5r8h12WaOBhEYV-UxGv9TI",
+                  title: "Notification title",
+                  body: "Notification body",
+                  data: {"screen": "cart",},
+                );
+
+              },
+              child: Text("Hit API"),
+            ),
           ],
         ),
       ),
