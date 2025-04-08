@@ -17,7 +17,10 @@ class _NotificationListState extends State<NotificationList> {
       appBar: AppBar(
         title: Text("Notification List"),
       ),
-      body: Card(
+      body: widget.message == null
+          ? Text("No notification!!!",
+            )
+          : Card(
         elevation: 3,
         child: ListTile(
           title: Text(widget.message!.notification!.title.toString()),

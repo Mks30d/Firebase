@@ -56,6 +56,7 @@ class _MainPageState extends State<MainPage> {
             child: Icon(Icons.notifications),
           ),
         ],
+        actionsIconTheme: IconThemeData(size: 40),
       ),
       body: Center(
         child: Column(
@@ -91,7 +92,7 @@ class _MainPageState extends State<MainPage> {
                   //------ samsung device token------------
                   token:
                       "eTcWdLHqQ4aCJt-BXeOojc:APA91bEmf-8D_RZgbYVcAj_nNZCXUbX6nFYWhLLYWlt-m6lRaF92G05VCfG8SdWYjv7nFybqLrBHHsB3CpyseRh2xeSyV0aFGRuVSbAUrsEsWoQBI2XiJRk",
-                  title: "Notification title",
+                  title: "-----Noti thought API: title---",
                   body: "Notification body",
                   data: {
                     "screen": "NotificationList",
