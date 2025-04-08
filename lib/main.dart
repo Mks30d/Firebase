@@ -1,5 +1,4 @@
-import 'package:firebase/components/login_page.dart';
-import 'package:firebase/components/notification.dart';
+import 'package:firebase/components/main_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,7 +41,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationPage();
+    return MainPage();
   }
 }
 

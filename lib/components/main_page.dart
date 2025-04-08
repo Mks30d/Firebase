@@ -1,24 +1,24 @@
 import 'package:firebase/components/login_page.dart';
+import 'package:firebase/components/notification_list.dart';
 import 'package:firebase/services/fcm_service.dart';
 import 'package:firebase/services/get_server_key.dart';
 import 'package:firebase/services/notification_service.dart';
 import 'package:firebase/services/send_notification_using_api_service.dart';
 import 'package:flutter/material.dart';
 
-class NotificationPage extends StatefulWidget {
-  const NotificationPage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<NotificationPage> createState() => _NotificationPageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _NotificationPageState extends State<NotificationPage> {
+class _MainPageState extends State<MainPage> {
   NotificationService notificationService = NotificationService();
   final GetServerKey _getServerKey = GetServerKey();
 
   @override
   void initState() {
-    // TODO: implement initState
     print("initState:--------");
     super.initState();
     notificationService.requestNotificationPermission();
@@ -36,12 +36,26 @@ class _NotificationPageState extends State<NotificationPage> {
     print("Server Token:------- $serverToken");
   }
 
+  //-----------------main--------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Notification Page"),
+        title: Text("Main Page"),
         backgroundColor: Colors.blue,
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NotificationList(),
+                ),
+              );
+            },
+            child: Icon(Icons.notifications),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -70,8 +84,13 @@ class _NotificationPageState extends State<NotificationPage> {
             ElevatedButton(
               onPressed: () async {
                 await SendNotificationUsingApiService.sendNotificationUsingApi(
+                  //------ realme device token------------
+                  // token:
+                  //     "eqnoyYJJTEueouqMrCcmmB:APA91bE79P0IscvF9CEv9ZThYtqncygUOkuMTJfUi14SrBJuukyZhpnpZMQ85BUaA0AVlXeOAkLAmhg-SgqPhVsibMPYCnUlP5r8h12WaOBhEYV-UxGv9TI",
+
+                  //------ samsung device token------------
                   token:
-                      "eqnoyYJJTEueouqMrCcmmB:APA91bE79P0IscvF9CEv9ZThYtqncygUOkuMTJfUi14SrBJuukyZhpnpZMQ85BUaA0AVlXeOAkLAmhg-SgqPhVsibMPYCnUlP5r8h12WaOBhEYV-UxGv9TI",
+                      "eTcWdLHqQ4aCJt-BXeOojc:APA91bEmf-8D_RZgbYVcAj_nNZCXUbX6nFYWhLLYWlt-m6lRaF92G05VCfG8SdWYjv7nFybqLrBHHsB3CpyseRh2xeSyV0aFGRuVSbAUrsEsWoQBI2XiJRk",
                   title: "Notification title",
                   body: "Notification body",
                   data: {
@@ -79,8 +98,9 @@ class _NotificationPageState extends State<NotificationPage> {
                   },
                 );
               },
-              child: Text("Hit API"),
+              child: const Text("Notification through API"),
             ),
+
           ],
         ),
       ),
