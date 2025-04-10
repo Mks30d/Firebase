@@ -19,14 +19,26 @@ class _SignupPageState extends State<SignupPage> {
           .createUserWithEmailAndPassword(
               email: emailController.text.trim(),
               password: passwordController.text.trim());
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Successful..."),
+          backgroundColor: Colors.green,
+        ),
+      );
+
       print("userCredential:--- $userCredential");
       print("user:--- ${userCredential.user}");
       print("email:--- ${userCredential.user!.email}");
       print("uid:--- ${userCredential.user!.uid}");
     } catch (e) {
       print("error:--- $e");
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("userCredential error")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
