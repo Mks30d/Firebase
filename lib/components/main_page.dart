@@ -1,10 +1,11 @@
 import 'package:firebase/components/login_page.dart';
 import 'package:firebase/components/notification_list.dart';
-import 'package:firebase/services/fcm_service.dart';
-import 'package:firebase/services/get_server_key.dart';
-import 'package:firebase/services/notification_service.dart';
-import 'package:firebase/services/send_notification_using_api_service.dart';
 import 'package:flutter/material.dart';
+
+import '../notification_services/fcm_service.dart';
+import '../notification_services/get_server_key.dart';
+import '../notification_services/notification_service.dart';
+import '../notification_services/send_notification_using_api_service.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -80,7 +81,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 );
               },
-              child: Text("Login"),
+              child: Text("Login Page"),
             ),
             ElevatedButton(
               onPressed: () async {

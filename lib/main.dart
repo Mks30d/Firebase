@@ -1,3 +1,4 @@
+import 'package:firebase/components/login_page.dart';
 import 'package:firebase/components/main_page.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
