@@ -1,22 +1,40 @@
 import 'package:firebase/components/signup_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SigninPage extends StatefulWidget {
+  const SigninPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SigninPage> createState() => _SigninPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SigninPageState extends State<SigninPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  Future<void> loginUserWithEmailAndPassword() async {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
+      print("userCredential:--- $userCredential");
+      print("user:--- ${userCredential.user}");
+      print("email:--- ${userCredential.user!.email}");
+      print("uid:--- ${userCredential.user!.uid}");
+    } catch (e) {
+      print("error:--- $e");
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("userCredential error")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login Page"),
+        title: Text("Sign in Page"),
         backgroundColor: Colors.teal,
       ),
       body: Padding(
@@ -51,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  // await loginUserWithEmailAndPassword();
+                  await loginUserWithEmailAndPassword();
                   print("emailController: ${emailController.text}");
                   print("passwordController: ${passwordController.text}");
                 },
@@ -62,7 +80,11 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage(),));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignupPage(),
+                      ));
                 },
                 child: RichText(
                   text: TextSpan(

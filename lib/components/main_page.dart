@@ -1,4 +1,4 @@
-import 'package:firebase/components/login_page.dart';
+import 'package:firebase/components/signin_page.dart';
 import 'package:firebase/components/notification_list.dart';
 import 'package:flutter/material.dart';
 
@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LoginPage(),
+                    builder: (context) => SigninPage(),
                   ),
                 );
               },

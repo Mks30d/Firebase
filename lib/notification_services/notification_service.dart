@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:app_settings/app_settings.dart';
-import 'package:firebase/components/login_page.dart';
+import 'package:firebase/components/signin_page.dart';
 import 'package:firebase/components/notification_list.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -186,7 +186,7 @@ class NotificationService {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginPage(),
+          builder: (context) => SigninPage(),
         ),
       );
     } else {
