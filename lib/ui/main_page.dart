@@ -1,12 +1,12 @@
-import 'package:firebase/components/signin_page.dart';
-import 'package:firebase/components/notification_list.dart';
-import 'package:firebase/components/todo_app/add_new_task.dart';
+import 'package:firebase/ui/signin_page.dart';
+import 'package:firebase/ui/todo_app/add_new_task.dart';
 import 'package:flutter/material.dart';
 
 import '../notification_services/fcm_service.dart';
 import '../notification_services/get_server_key.dart';
 import '../notification_services/notification_service.dart';
 import '../notification_services/send_notification_using_api_service.dart';
+import 'notification_list.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});

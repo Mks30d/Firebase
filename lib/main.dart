@@ -1,6 +1,6 @@
-import 'package:firebase/components/main_page.dart';
-import 'package:firebase/components/signin_page.dart';
-import 'package:firebase/components/signup_page.dart';
+import 'package:firebase/ui/main_page.dart';
+import 'package:firebase/ui/signup_page.dart';
+import 'package:firebase/ui/splash_screen/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -43,23 +43,25 @@ class MyApp extends StatelessWidget {
       // OR
 
       // better than above method as it is real time, it is asynchronous
-      home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.data != null) {
-              print("MyHomePage...");
-              return MyHomePage();
-            }
-            else{
-              print("Not sign in...");
-              return SigninPage();
-            }
-          }),
+      // home: StreamBuilder(
+      //     stream: FirebaseAuth.instance.authStateChanges(),
+      //     builder: (context, snapshot) {
+      //       if (snapshot.connectionState == ConnectionState.waiting) {
+      //         return const Center(
+      //           child: CircularProgressIndicator(),
+      //         );
+      //       }
+      //       if (snapshot.data != null) {
+      //         print("MyHomePage...");
+      //         return MyHomePage();
+      //       }
+      //       else{
+      //         print("Not sign in...");
+      //         return SigninPage();
+      //       }
+      //     }),
+
+      home: SplashScreen(),
     );
   }
 }

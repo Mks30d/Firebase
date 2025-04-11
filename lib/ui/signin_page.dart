@@ -1,4 +1,4 @@
-import 'package:firebase/components/signup_page.dart';
+import 'package:firebase/ui/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -48,6 +48,7 @@ class _SigninPageState extends State<SigninPage> {
       appBar: AppBar(
         title: Text("Sign in Page"),
         backgroundColor: Colors.teal,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),

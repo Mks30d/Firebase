@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:app_settings/app_settings.dart';
-import 'package:firebase/components/signin_page.dart';
-import 'package:firebase/components/notification_list.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // import 'package:get/get.dart';
 import 'dart:io' show Platform;
+
+import '../ui/notification_list.dart';
+import '../ui/signin_page.dart';
 
 class NotificationService {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
