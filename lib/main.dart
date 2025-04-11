@@ -1,4 +1,5 @@
 import 'package:firebase/components/main_page.dart';
+import 'package:firebase/components/signin_page.dart';
 import 'package:firebase/components/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -51,9 +52,13 @@ class MyApp extends StatelessWidget {
               );
             }
             if (snapshot.data != null) {
+              print("MyHomePage...");
               return MyHomePage();
             }
-            return SignupPage();
+            else{
+              print("Not sign in...");
+              return SigninPage();
+            }
           }),
     );
   }

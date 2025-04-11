@@ -1,5 +1,6 @@
 import 'package:firebase/components/signin_page.dart';
 import 'package:firebase/components/notification_list.dart';
+import 'package:firebase/components/todo_app/add_new_task.dart';
 import 'package:flutter/material.dart';
 
 import '../notification_services/fcm_service.dart';
@@ -83,6 +84,20 @@ class _MainPageState extends State<MainPage> {
               },
               child: Text("Login Page"),
             ),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddNewTask(),
+                  ),
+                );
+              },
+              child: Text("AddNewTask"),
+            ),
+
+
             ElevatedButton(
               onPressed: () async {
                 await SendNotificationUsingApiService.sendNotificationUsingApi(
