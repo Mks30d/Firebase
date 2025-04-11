@@ -25,10 +25,11 @@ class SendNotificationUsingApiService {
       "Authorization": "Bearer $serverKey",
     };
 
-    // body
+    // ---------- api body ----------
     Map<String, dynamic> message = {
       "message": {
-        "token": token,
+        // "token": token, // to send notif to specific user using device token
+        "topic" : "all", // to send notif to all user
         "notification": {
           "title": title,
           "body": body,

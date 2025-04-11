@@ -118,6 +118,18 @@ class _MainPageState extends State<MainPage> {
               child: const Text("Notification through API"),
             ),
 
+
+            ElevatedButton(
+              onPressed: () async {
+                SendNotificationUsingApiService.sendNotificationUsingApi(
+                  token: "",
+                  title: "all user title",
+                  body: "all user body",
+                  data: {},
+                );
+              },
+              child: Text("Notification to all through API"),
+            ),
           ],
         ),
       ),
