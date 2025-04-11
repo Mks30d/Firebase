@@ -1,4 +1,6 @@
 import 'package:firebase/components/main_page.dart';
+import 'package:firebase/components/signup_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +11,7 @@ Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -31,7 +33,28 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+
+      // displaying homepage if user is signin, if not then displaying signup page
+      // it wasn't real time, it is synchronous
+      // home: FirebaseAuth.instance.currentUser != null
+      //     ? const MyHomePage()
+      //     : SignupPage(),
+      // OR
+
+      // better than above method as it is real time, it is asynchronous
+      home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (snapshot.data != null) {
+              return MyHomePage();
+            }
+            return SignupPage();
+          }),
     );
   }
 }
@@ -44,4 +67,3 @@ class MyHomePage extends StatelessWidget {
     return MainPage();
   }
 }
-

@@ -9,7 +9,9 @@ class GetServerKey {
       'https://www.googleapis.com/auth/firebase.messaging',
     ];
 
-    final client = await clientViaServiceAccount(
+    late final client;
+    try {
+      client = await clientViaServiceAccount(
         ServiceAccountCredentials.fromJson({
           "type": "service_account",
           "project_id": "fir-tutorial-cfc61",
@@ -23,7 +25,11 @@ class GetServerKey {
           "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40fir-tutorial-cfc61.iam.gserviceaccount.com",
           "universe_domain": "googleapis.com"
         }),
-        scopes);
+        scopes,
+      );
+    } catch (e) {
+      print("-----------getServerKeyToken, private_key error-----------");
+    }
 
     final accessServerKey = client.credentials.accessToken.data;
     // print("accessServerKey:----- $accessServerKey");
