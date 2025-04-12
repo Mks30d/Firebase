@@ -45,6 +45,7 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text("Main Page"),
         backgroundColor: Colors.blue,
+        automaticallyImplyLeading: false, // to remove leading back button after signin
         actions: [
           InkWell(
             onTap: () {

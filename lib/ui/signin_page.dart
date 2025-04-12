@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:firebase/ui/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'main_page.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -10,10 +14,11 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-
-  final _formKey = GlobalKey<FormState>(); // for validating the email/password entered or not
+  final _formKey = GlobalKey<
+      FormState>(); // for validating the email/password entered or not
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isLoading = false;
 
   Future<bool> loginUserWithEmailAndPassword() async {
     try {
@@ -59,7 +64,7 @@ class _SigninPageState extends State<SigninPage> {
         child: Column(
           children: [
             Form(
-              key: _formKey,  // GlobalKey
+              key: _formKey, // GlobalKey
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,6 +79,7 @@ class _SigninPageState extends State<SigninPage> {
                   const SizedBox(height: 15),
                   TextFormField(
                     controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       hintText: 'Email',
                     ),
@@ -87,6 +93,7 @@ class _SigninPageState extends State<SigninPage> {
                   const SizedBox(height: 15),
                   TextFormField(
                     controller: passwordController,
+                    keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       hintText: 'Password',
                     ),
@@ -100,19 +107,49 @@ class _SigninPageState extends State<SigninPage> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) { // return true if email/password is entered else false
-                        if (await loginUserWithEmailAndPassword()) {
-                          _formKey.currentState!.reset(); // to reset form field state
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                          print("isLoading:-- $isLoading");
+                          debugPrint("isLoading");
+                        });
+                        if (_formKey.currentState!.validate()) { // return true if email/password is entered else false
+                          if (await loginUserWithEmailAndPassword()) {
+                            setState(() {
+                              isLoading = false;
+                              print("isLoading:-- $isLoading");
+                            });
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MainPage(),
+                              ),
+                              (route) => false, // This removes all routes behind
+                            );
+                            _formKey.currentState!.reset(); // to reset form field state
+                          }
                         }
-                      }
-                      print("emailController: ${emailController.text}");
-                      print("passwordController: ${passwordController.text}");
-                    },
-                    child: const Text(
-                      'SIGN IN',
-                    ),
-                  ),
+
+                        setState(() {
+                          isLoading = false;
+                        });
+                        print("emailController: ${emailController.text}");
+                        print("passwordController: ${passwordController.text}");
+                      },
+                      child: isLoading
+                          ? Container(
+                              height: 25,
+                              width: 25,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                // strokeAlign: 0.1,
+                                strokeCap: StrokeCap.round,
+                                color: Colors.purple,
+                              ),
+                            )
+                          : const Text(
+                              'SIGN IN',
+                            )),
                   const SizedBox(height: 20),
                   InkWell(
                     onTap: () {
