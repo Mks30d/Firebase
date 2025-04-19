@@ -55,6 +55,14 @@ class _FirestoreListScreenState extends State<FirestoreListScreen> {
                     return ListTile(
                       title: Text(snapshot.data!.docs[index].id.toString()),
                       subtitle: Text(snapshot.data!.docs[index]["title"]),
+
+                      leading: IconButton(
+                          onPressed: () {
+                            ref.doc(snapshot.data!.docs[index].id).delete();
+                          },
+                          icon: Icon(Icons.delete),
+                      ),
+
                       trailing: IconButton(
                         onPressed: () {
                           editController.text = snapshot.data!.docs[index]["title"];
