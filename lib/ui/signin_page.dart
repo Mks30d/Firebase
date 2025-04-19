@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase/ui/forgot_password.dart';
 import 'package:firebase/ui/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -175,6 +176,16 @@ class _SigninPageState extends State<SigninPage> {
                       ),
                     ),
                   ),
+
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPassword(),
+                            ));
+                      },
+                      child: Text("Forgot Password"))
                 ],
               ),
             ),

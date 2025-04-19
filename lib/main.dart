@@ -12,7 +12,7 @@ Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
-void customSuccessScaffoldMessage(BuildContext context) {
+void successScaffoldMessage(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content:
@@ -22,7 +22,7 @@ void customSuccessScaffoldMessage(BuildContext context) {
   );
 }
 
-void customErrorScaffoldMessage(BuildContext context, String error) {
+void errorScaffoldMessage(BuildContext context, String error) {
   debugPrint("Error:- $error");
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(

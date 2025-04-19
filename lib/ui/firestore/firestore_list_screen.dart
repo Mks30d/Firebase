@@ -72,9 +72,7 @@ class _FirestoreListScreenState extends State<FirestoreListScreen> {
                                       child: Text("Cancel")),
                                   TextButton(
                                       onPressed: () {
-                                        ref
-                                            .doc(snapshot.data!.docs[index].id)
-                                            .delete();
+                                        ref.doc(snapshot.data!.docs[index].id).delete();
                                         Navigator.pop(context);
                                       },
                                       child: Text("Delete"))
@@ -149,11 +147,11 @@ class _FirestoreListScreenState extends State<FirestoreListScreen> {
                     "title": editController.text,
                   }).then(
                     (value) {
-                      customSuccessScaffoldMessage(context);
+                      successScaffoldMessage(context);
                     },
                   ).onError(
                     (error, stackTrace) {
-                      customErrorScaffoldMessage(context, error.toString());
+                      errorScaffoldMessage(context, error.toString());
                     },
                   );
                   Navigator.pop(context);
