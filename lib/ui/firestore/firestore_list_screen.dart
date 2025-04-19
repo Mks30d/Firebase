@@ -55,14 +55,37 @@ class _FirestoreListScreenState extends State<FirestoreListScreen> {
                     return ListTile(
                       title: Text(snapshot.data!.docs[index].id.toString()),
                       subtitle: Text(snapshot.data!.docs[index]["title"]),
-
+                      //----------Delete---------
                       leading: IconButton(
-                          onPressed: () {
-                            ref.doc(snapshot.data!.docs[index].id).delete();
-                          },
-                          icon: Icon(Icons.delete),
+                        onPressed: () {
+                          // ref.doc(snapshot.data!.docs[index].id).delete();
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Text("Are you sure!"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Cancel")),
+                                  TextButton(
+                                      onPressed: () {
+                                        ref
+                                            .doc(snapshot.data!.docs[index].id)
+                                            .delete();
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Delete"))
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(Icons.delete),
                       ),
-
+                      //----------Edit----------
                       trailing: IconButton(
                         onPressed: () {
                           editController.text = snapshot.data!.docs[index]["title"];
