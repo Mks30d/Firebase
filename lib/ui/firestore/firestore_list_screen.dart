@@ -14,7 +14,10 @@ class FirestoreListScreen extends StatefulWidget {
 class _FirestoreListScreenState extends State<FirestoreListScreen> {
   final firestore = FirebaseFirestore.instance.collection("users").snapshots();
 
-  CollectionReference ref = FirebaseFirestore.instance.collection("users"); // or
+  CollectionReference ref = FirebaseFirestore.instance.collection("users"); // --OR--
+  // final ref = FirebaseFirestore.instance.collection("users");
+
+  final editController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,21 +55,29 @@ class _FirestoreListScreenState extends State<FirestoreListScreen> {
                     return ListTile(
                       title: Text(snapshot.data!.docs[index].id.toString()),
                       subtitle: Text(snapshot.data!.docs[index]["title"]),
-                      leading: IconButton(
-                          onPressed: () {
-                            ref.doc(snapshot.data!.docs[index]["id"]).update({
-                              "title": "updated: $index",
-                            }).then(
-                              (value) {
-                                customSuccessScaffoldMessage(context);
-                              },
-                            ).onError(
-                              (error, stackTrace) {
-                                customErrorScaffoldMessage(context, error.toString());
-                              },
-                            );
-                          },
-                          icon: Icon(Icons.update)),
+                      trailing: IconButton(
+                        onPressed: () {
+                          editController.text = snapshot.data!.docs[index]["title"];
+                          String id = snapshot.data!.docs[index].id.toString(); // --OR--
+                          // String id = snapshot.data!.docs[index]["id"].toString();
+
+                          showMyDialogBox(
+                              editController.text, id, index, snapshot,);
+
+                          //   ref.doc(snapshot.data!.docs[index]["id"]).update({
+                          //     "title": "updated: $index",
+                          //   }).then(
+                          //     (value) {
+                          //       customSuccessScaffoldMessage(context);
+                          //     },
+                          //   ).onError(
+                          //     (error, stackTrace) {
+                          //       customErrorScaffoldMessage(context, error.toString());
+                          //     },
+                          //   );
+                        },
+                        icon: Icon(Icons.edit),
+                      ),
                     );
                   },
                 ),
@@ -77,38 +88,49 @@ class _FirestoreListScreenState extends State<FirestoreListScreen> {
       ),
     );
   }
-}
 
-// // ----------------------------------------------
-// final editController = TextEditingController();
-//
-// Future<void> showMyDailog() {
-//   return showDialog(
-//     context: context,
-//     builder: (context) {
-//       return AlertDialog(
-//         title: Text("Update"),
-//         actions: [
-//           TextButton(
-//               onPressed: () {
-//                 Navigator.pop(context);
-//               },
-//               child: Text("Cancel")),
-//           TextButton(
-//               onPressed: () {
-//                 Navigator.pop(context);
-//               },
-//               child: Text("Update"))
-//         ],
-//         content: Container(
-//           child: TextField(
-//             controller: editController,
-//             decoration: InputDecoration(
-//               hintText: "Enter...",
-//             ),
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
+  // ----------------- showMyDialog ------------------
+  Future<void> showMyDialogBox(String text, String id, int index,
+      AsyncSnapshot<QuerySnapshot> snapshot) {
+    editController.text = text;
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Update"),
+          content: Container(
+            child: TextField(
+              controller: editController,
+              decoration: InputDecoration(
+                hintText: "Enter...",
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Cancel")),
+            TextButton(
+                onPressed: () {
+                  ref.doc(snapshot.data!.docs[index]["id"]).update({
+                    "title": editController.text,
+                  }).then(
+                    (value) {
+                      customSuccessScaffoldMessage(context);
+                    },
+                  ).onError(
+                    (error, stackTrace) {
+                      customErrorScaffoldMessage(context, error.toString());
+                    },
+                  );
+                  Navigator.pop(context);
+                },
+                child: Text("Update"))
+          ],
+        );
+      },
+    );
+  }
+}
