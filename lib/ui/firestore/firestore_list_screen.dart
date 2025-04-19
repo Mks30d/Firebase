@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/ui/firestore/add_firestore_data.dart';
 import 'package:firebase/ui/posts/add_post_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +11,13 @@ class FirestoreListScreen extends StatefulWidget {
 }
 
 class _FirestoreListScreenState extends State<FirestoreListScreen> {
-  final postController = TextEditingController();
+  final firestore = FirebaseFirestore.instance.collection("users").snapshots();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("FirestoreListScreen"),
-        automaticallyImplyLeading: true,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -31,52 +31,66 @@ class _FirestoreListScreenState extends State<FirestoreListScreen> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text("data: $index"),
-                );
-              },
-            ),
+          StreamBuilder<QuerySnapshot>(
+            stream: firestore,
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return Center(child: CircularProgressIndicator());
+
+              if (snapshot.hasError) {
+                return Center(
+                    child: Text("snapshot error!!! ${snapshot.hasError}"));
+              }
+
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(snapshot.data!.docs[index].id.toString()),
+                      subtitle: Text(snapshot.data!.docs[index]["title"]),
+                    );
+                  },
+                ),
+              );
+            },
           )
         ],
       ),
     );
   }
-
-  // ----------------------------------------------
-  final editController = TextEditingController();
-
-  Future<void> showMyDailog() {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Update"),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Cancel")),
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text("Update"))
-          ],
-          content: Container(
-            child: TextField(
-              controller: editController,
-              decoration: InputDecoration(
-                hintText: "Enter...",
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
+
+// // ----------------------------------------------
+// final editController = TextEditingController();
+//
+// Future<void> showMyDailog() {
+//   return showDialog(
+//     context: context,
+//     builder: (context) {
+//       return AlertDialog(
+//         title: Text("Update"),
+//         actions: [
+//           TextButton(
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//               child: Text("Cancel")),
+//           TextButton(
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//               child: Text("Update"))
+//         ],
+//         content: Container(
+//           child: TextField(
+//             controller: editController,
+//             decoration: InputDecoration(
+//               hintText: "Enter...",
+//             ),
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }
