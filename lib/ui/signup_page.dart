@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:firebase/ui/main_page.dart';
 import 'package:firebase/ui/signin_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +12,12 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final _formKey = GlobalKey<FormState>(); // for validating the email/password entered or not
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isLoading = false;
 
-  Future<void> createUserWithEmailAndPassword() async {
+  Future<bool> createUserWithEmailAndPassword() async {
     try {
       final userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -31,6 +35,7 @@ class _SignupPageState extends State<SignupPage> {
       print("user:--- ${userCredential.user}");
       print("email:--- ${userCredential.user!.email}");
       print("uid:--- ${userCredential.user!.uid}");
+      return true;
     } catch (e) {
       print("error:--- $e");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -39,6 +44,7 @@ class _SignupPageState extends State<SignupPage> {
           backgroundColor: Colors.red,
         ),
       );
+      return false;
     }
   }
 
@@ -52,6 +58,7 @@ class _SignupPageState extends State<SignupPage> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -65,32 +72,80 @@ class _SignupPageState extends State<SignupPage> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: emailController,
+                keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   hintText: 'Email',
                 ),
+                validator: (value) { // for showing error when email is not entered
+                  if (value!.isEmpty) {
+                    return "Enter email...";
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 15),
               TextFormField(
                 controller: passwordController,
+                keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   hintText: 'Password',
                 ),
                 obscureText: true,
+                validator: (value) { // for showing error when password is not entered
+                  if (value!.isEmpty) {
+                    return "Enter password...";
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  await createUserWithEmailAndPassword();
+                  setState(() {
+                    isLoading = true;
+                    print("isLoading:-- $isLoading");
+                  });
+                  if (_formKey.currentState!.validate()) { // return true if email/password is entered else false
+                    if (await createUserWithEmailAndPassword()) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage(),));
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainPage(),
+                        ),
+                            (route) => false, // This removes all routes behind
+                      );
+                      _formKey.currentState!.reset(); // to reset form field state
+                    }
+                  }
+
+                  setState(() {
+                    isLoading = false;
+                  });
                   print("emailController: ${emailController.text}");
                   print("passwordController: ${passwordController.text}");
                 },
-                child: const Text(
-                  'SIGN UP',
-                  // style: TextStyle(
-                  //   fontSize: 16,
-                  //   color: Colors.white,
-                  // ),
-                ),
+                child: isLoading
+                    ? Container(
+                        height: 25,
+                        width: 25,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          // strokeAlign: 0.1,
+                          strokeCap: StrokeCap.round,
+                          color: Colors.purple,
+                        ),
+                      )
+                    : const Text(
+                        'SIGN UP',
+                        // style: TextStyle(
+                        //   fontSize: 16,
+                        //   color: Colors.white,
+                        // ),
+                      ),
               ),
               const SizedBox(height: 20),
               InkWell(

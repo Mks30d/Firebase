@@ -1,11 +1,15 @@
+import 'package:firebase/ui/posts/add_post_screen.dart';
+import 'package:firebase/ui/posts/add_post_screen_realtimeDB.dart';
 import 'package:firebase/ui/signin_page.dart';
 import 'package:firebase/ui/todo_app/add_new_task.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../notification_services/fcm_service.dart';
 import '../notification_services/get_server_key.dart';
 import '../notification_services/notification_service.dart';
 import '../notification_services/send_notification_using_api_service.dart';
+import 'firestore/firestore_list_screen.dart';
 import 'notification_list.dart';
 
 class MainPage extends StatefulWidget {
@@ -18,6 +22,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   NotificationService notificationService = NotificationService();
   final GetServerKey _getServerKey = GetServerKey();
+  final auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -45,6 +50,7 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text("Main Page"),
         backgroundColor: Colors.blue,
+        automaticallyImplyLeading: false, // to remove leading back button after signin
         actions: [
           InkWell(
             onTap: () {
@@ -129,6 +135,23 @@ class _MainPageState extends State<MainPage> {
                 );
               },
               child: Text("Notification to all through API"),
+            ),
+
+            ElevatedButton(
+              onPressed: () async {
+                auth.signOut().then((value) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SigninPage(),));
+                },);
+              },
+              child: Text("SIGN OUT"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                auth.signOut().then((value) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => FirestoreListScreen(),));
+                },);
+              },
+              child: Text("Firestore Database"),
             ),
           ],
         ),

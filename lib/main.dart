@@ -12,6 +12,26 @@ Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
+void successScaffoldMessage(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content:
+      Text("Successfully..."),
+      backgroundColor: Colors.green,
+    ),
+  );
+}
+
+void errorScaffoldMessage(BuildContext context, String error) {
+  debugPrint("Error:- $error");
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text("Error-: $error"),
+      backgroundColor: Colors.red,
+    ),
+  );
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
